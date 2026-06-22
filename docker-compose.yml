@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: triage_postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  graph:
+    build:
+      context: ./graph
+      dockerfile: Dockerfile
+    container_name: triage_graph
+    ports:
+      - "8123:8123"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=triage_postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: triage_frontend
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - CLOUD_RUN_GRAPH_URL=http://triage_graph:8123
+      - ASSISTANT_ID_OR_NAME=triage
+      - DATABASE_URL=postgresql+pg8000://${DB_USER}:${DB_PASS}@triage_postgres:5432/${DB_NAME}
+    depends_on:
+      - graph
+      - postgres
+
+volumes:
+  postgres_data:

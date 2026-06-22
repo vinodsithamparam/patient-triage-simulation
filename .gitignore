@@ -1,0 +1,18 @@
+# Credentials & Configuration
+.env
+**/ .env
+
+# Python caching artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# LangGraph runtime local cache directories
+.langgraph_api/
+.langgraph/
+
+# OS-specific files
+.DS_Store
+Thumbs.db

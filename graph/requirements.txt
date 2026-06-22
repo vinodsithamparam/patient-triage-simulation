@@ -1,0 +1,13 @@
+langgraph
+langgraph-cli[inmem]
+langchain-groq
+sqlalchemy
+pandas
+numpy
+shap
+xgboost
+pydantic
+python-dotenv
+scikit-learn==1.6.1
+joblib==1.5.3
+psycopg2-binary
