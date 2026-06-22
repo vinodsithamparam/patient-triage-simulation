@@ -4,7 +4,11 @@
 The **Clinical Triage Control Center** is an isolated, local multi-container intelligent application built to streamline emergency medical intake and risk management. It combines deterministic validation, machine learning predictive inference and structured LLM clinical assessment.
 
 ---
+## Demostration 
 
+https://github.com/user-attachments/assets/e360b0b0-857d-4801-8885-529292e4865e
+
+---
 ## 🏗️ System Architecture
 
 The application runs across three primary services containerized via Docker:
